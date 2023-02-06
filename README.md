@@ -25,7 +25,7 @@ As a person who loves to travel, I want to be able to post information about my 
 
 ## Installation
 
-You can visit our website by going [here](https://hidden-reef-01487.herokuapp.com/). Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
+You can visit our website by going [here](https://journey-journals-2023.herokuapp.com/). Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
 
 
 ## Usage
@@ -49,7 +49,7 @@ This is the profile page once you have toggled on the dark mode.
 
 The repo for this app can be found [here](https://github.com/M-Dickerson/journey-journals).
 
-The app is deployed on [heroku](https://hidden-reef-01487.herokuapp.com/).
+The app is deployed on [heroku](https://journey-journals-2023.herokuapp.com/).
 
 
 ## Technologies
