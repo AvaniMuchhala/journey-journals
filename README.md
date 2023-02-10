@@ -23,12 +23,11 @@ As a person who loves to travel, I want to be able to post information about my 
 - [Questions](#questions)
 
 
-## Installation
-
-You can visit our website by going [here](https://journey-journals-2023.herokuapp.com/). Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
-
-
 ## Usage
+
+Visit our website: https://journey-journals-2023.herokuapp.com/ 
+
+Once you get to the page, just sign up by clicking on 'Sign Up' at the top right of the page. Once signed up, you will be able to see what trips others have taken and share your own travel adventures with others.  
 
 Upon visiting our app you will see a screen welcoming you to the app and encouraging you to log in or sign up. 
 ![homepage](assets/images/homepage_screenshot.png)
