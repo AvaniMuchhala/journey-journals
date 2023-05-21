@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Navigate, useParams } from 'react-router-dom';
 import Axios from 'axios';
-// links for react bootstrap styling
 import "../../styles/ProfilePage.css";
 import { Container, Row, Col, Card, Image, Button, Modal, Tab } from "react-bootstrap";
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';

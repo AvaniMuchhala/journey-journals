@@ -1,7 +1,6 @@
 import React from "react"
-// links for react bootstrap styling
 import "../../styles/TravelFeed.css";
-import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_ALL_POSTS } from '../../utils/queries';
 import Post from '../Post';
 

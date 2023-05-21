@@ -34,7 +34,6 @@ const typeDefs = gql`
         comments: [Comment]
         commentCount: Int
         createdAt: String
-        # created_at: String
         username: String
         userId: User
         tripId: Trip

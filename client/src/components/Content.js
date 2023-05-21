@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Header from "../components/Header";
+import AppNavbar from "./Navbar";
 import Footer from "../components/Footer";
 import Landing from "../components/pages/Landing";
 import TravelFeed from "../components/pages/TravelFeed";
@@ -12,7 +12,7 @@ function Content() {
     return (
         <div className={darkMode ? 'content-dark' : 'content-light'}>
             <Router>
-                <Header />
+                <AppNavbar />
                 <Routes>
                     <Route
                         path="/"

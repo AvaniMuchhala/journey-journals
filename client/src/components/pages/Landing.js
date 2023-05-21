@@ -1,5 +1,4 @@
 import React from "react";
-// links for react bootstrap styling
 import "../../styles/Landing.css";
 import { Container, Row, Col, Card } from "react-bootstrap";
 import Auth from '../../utils/auth';

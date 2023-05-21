@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Container, Row, Card, Form, Col, Image, Button } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import "../styles/TravelFeed.css";
-import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { ADD_COMMENT, DELETE_COMMENT, TOGGLE_LIKE_POST } from '../utils/mutations';
 import Auth from '../utils/auth';
 

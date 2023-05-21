@@ -1,12 +1,10 @@
 import React, { useState, useContext } from "react";
-// links for react bootstrap styling
 import "../styles/Navbar.css";
 import { Navbar, Nav, Container, Modal, Tab } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import SignupForm from './SignupForm';
 import LoginForm from './LoginForm';
 import { DarkModeContext } from '../context/DarkModeContext';
-
 import Auth from '../utils/auth';
 
 function AppNavbar() {
