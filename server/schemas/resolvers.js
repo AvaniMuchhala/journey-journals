@@ -33,7 +33,7 @@ const resolvers = {
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
             const trips = await Trip.find({ 
-                username: context.user.username
+                username: args.username ||context.user.username
             }).populate('posts');
             return trips;
         },
@@ -225,11 +225,14 @@ const resolvers = {
             const trip = await Trip.findOneAndDelete({ _id: args.tripId });
 
             // Update User's trips field
-            const updatedUser = await User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 { username: args.username || context.user.username },
                 { $pull: { trips: { _id: args.tripId } } },
                 { new: true }
-            ).populate('trips');
+            );
+
+            // Delete all posts associated to that trip
+            await Post.deleteMany({ tripId: args.tripId });
 
             return trip;
         },
@@ -281,30 +284,6 @@ const resolvers = {
         deletePost: async (parent, args, context) => {
             // Delete post
             const post = await Post.findOneAndDelete({ _id: args.postId });
-
-            // Update Trip's posts field
-            const updatedTrip = await Trip.findOneAndUpdate(
-                { _id: post.tripId._id },
-                {
-                    $pull: { posts: { _id: args.postId } },
-                },
-                {
-                    new: true,
-                    runValidators: true,
-                }
-            );
-
-            // Update User's posts field
-            const updatedUser = await User.findOneAndUpdate(
-                { username: args.username || context.user.username },
-                {
-                    $pull: { posts: { _id: args.postId } },
-                },
-                {
-                    new: true,
-                    runValidators: true,
-                }
-            );
 
             return post;
         },
