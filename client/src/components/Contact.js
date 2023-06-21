@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { GET_EMAIL_USER } from '../utils/queries';
 import { useQuery, useMutation, useLazyQuery } from '@apollo/client';
 
-export default function Contact({ recipientUsername }) {
+export default function Contact({ handleModalClose, recipientUsername }) {
     const [message, setMessage] = useState('');
     const [errorMessage, setErrorMessage] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
@@ -17,6 +17,9 @@ export default function Contact({ recipientUsername }) {
         const { data, error } = await getEmail({ variables: { username: recipientUsername, message }, });
         if (data && !error) {
             setSuccessMessage('Message sent!');
+            setTimeout(function() {
+                handleModalClose();
+            }, 1500);
         } else if (error) {
             setErrorMessage('Unable to send message.');
         }
