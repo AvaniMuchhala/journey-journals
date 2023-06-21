@@ -100,7 +100,7 @@ const typeDefs = gql`
         deleteTrip(tripId: String!, username: String): Trip
         addPost(postInfo: AddPostInfo): Post
         deletePost(postId: String!, username: String): Post
-        editPost(postId: String, title: String, description: String, postImage: String) : Post
+        editPost(postId: String, title: String, description: String, postImage: String): Post
         addComment(text: String!, username: String, postId: String!): Post
         deleteComment(commentId: String!, postId: String!): Post
         toggleLikePost(postId: String, userId: String): Post

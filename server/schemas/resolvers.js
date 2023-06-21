@@ -2,27 +2,24 @@ const { AuthenticationError } = require('apollo-server-express');
 const { User, Trip, Post } = require('../models');
 const { signToken } = require('../utils/auth');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 const resolvers = {
     Query: {
         // Get logged-in user info
         me: async (parent, args, context) => {
             if (context.user || args.username) {
-                const user = await User.findOne({ username: args.username || context.user.username }).populate('trips').populate({
+                return await User.findOne({ username: args.username || context.user.username }).populate('trips').populate({
                     path: 'trips',
                     populate: 'posts'
                 }).populate('posts').populate('followers');
-
-                return user;
             }
             throw new AuthenticationError('You need to be logged in!');
         },
 
         // Get single user (to look at their profile page)
         getSingleUser: async (parent, { username }, context) => {
-            const user = await User.findOne({ username }).populate('trips').populate('posts').populate('followers');
-
-            return user;
+            return await User.findOne({ username }).populate('trips').populate('posts').populate('followers');
         },
 
         // Get all users in DB
@@ -32,47 +29,39 @@ const resolvers = {
 
         // Get trips by single user (to populate trips list on profile page)
         getTripsByUser: async (parent, args, context) => {
-            const trips = await Trip.find({ 
-                username: args.username ||context.user.username
+            return await Trip.find({ 
+                username: args.username || context.user.username
             }).populate('posts');
-            return trips;
         },
 
         // Get single trip by ID
         getSingleTrip: async (parent, { tripId }, context) => {
-            const trip = await Trip.findOne({ _id: tripId }).populate('posts');
-            return trip;
+            return await Trip.findOne({ _id: tripId }).populate('posts');
         },
 
-        // Get all posts (travel feed) & sort from newest to oldest
+        // Get all posts (travel feed) & sort from newest to oldest created
         getAllPosts: async (parent, args) => {
-            const posts = await Post.find({}).populate('comments').populate('tripId').populate('userId').populate('likes');
-            const sortedPosts = posts.sort((a, b) => a.createdAt - b.createdAt);
-            return sortedPosts;
+            return await Post.find({}).populate('comments').populate('tripId').populate('userId').populate('likes').sort({ createdAt: -1 });
         },
 
         // Get posts by single user (profile page)
         getPostsByUser: async (parent, { username }) => {
-            const posts = await Post.find({ username }).populate('comments').populate('tripId');
-            return posts;
+            return await Post.find({ username }).populate('comments').populate('tripId');
         },
 
         // Get all posts in single trip (profile page)
         getPostsByTrip: async (parent, { tripId }) => {
-            const posts = await Post.find({ tripId }).populate('comments').populate('tripId');
-            return posts;
+            return await Post.find({ tripId }).populate('comments').populate('tripId');
         },
 
         // Get single post by ID
         getSinglePost: async (parent, { postId }) => {
-            const post = await Post.findOne({ _id: postId }).populate('comments').populate('tripId');
-            return post;
+            return await Post.findOne({ _id: postId }).populate('comments').populate('tripId');
         },
 
         // Get comments based on postId (populate comments per post on travel feed)
         getCommentsOnPost: async (parent, { postId }) => {
-            const post = await Post.findOne({ _id: postId }).populate('comments');
-            return post;
+            return await Post.findOne({ _id: postId }).populate('comments');
         },
 
         // Get user's followers
@@ -83,37 +72,36 @@ const resolvers = {
 
         // Nodemailer email functionality
         getEmailUser: async (parent, args, context) => {
-
-            console.log('the args', args);
-
             if (!context.user) {
                 throw new AuthenticationError('You need to be logged in!');
             }
-
             if (args.username) {
-                console.log('You got here');
                 const recipient = await User.findOne({ username: args.username });
-                console.log('RESULT:\n');
-                console.log('recipient', recipient);
-                console.log('user username', context.user.username);
-
+            
                 let transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth: {
-                        user: 'ryanmbelcher86@gmail.com',
-                        pass: process.env.EMAIL_PASSWORD,
+                        user: process.env.REACT_APP_EMAIL,
+                        pass: process.env.REACT_APP_EMAIL_PASSWORD
                     },
+                    tls: {
+                        rejectUnauthorized: false
+                    }
                 });
 
-                let info = await transporter.sendMail({
-                    from: 'Journey Journals',
+                let info = transporter.sendMail({
+                    from: process.env.REACT_APP_EMAIL,
                     to: recipient.email,
-                    subject: `Message from ${context.user.username}`,
-                    text: args.message,
-                    html: `<p>${args.message}<p>`
+                    subject: `Journey Journals Contact: Message from ${context.user.username}`,
+                    text: `${args.message}\n\n From ${context.user.username} (${context.user.email})`
+                }, function (err, info) {
+                    if (err) {
+                        console.log(err);
+                        return;
+                    }
+                    console.log('Message sent: ', info.response);
                 });
-
-                console.log("Message sent: %s", info.messageId);
+                return;
             }
         },
     },
@@ -204,7 +192,7 @@ const resolvers = {
             });
 
             // Add trip to User's trips
-            const updatedUser = await User.findOneAndUpdate(
+            await User.findOneAndUpdate(
                 { username: args.username || context.user.username },
                 {
                     $addToSet: {
@@ -372,6 +360,3 @@ const resolvers = {
 }
 
 module.exports = resolvers;
-
-
-
